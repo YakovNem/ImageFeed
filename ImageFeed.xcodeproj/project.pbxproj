@@ -14,6 +14,8 @@
 		B42701732933D417007AE4F7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B42701722933D417007AE4F7 /* Assets.xcassets */; };
 		B42701762933D417007AE4F7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B42701742933D417007AE4F7 /* LaunchScreen.storyboard */; };
 		B43BB5D5296B5B75002ED9C4 /* ImagesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43BB5D4296B5B75002ED9C4 /* ImagesListCell.swift */; };
+		B47DDE85298E9947008F1E2E /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B47DDE84298E9947008F1E2E /* ProfileViewController.swift */; };
+		B47E453F299D52F40091801F /* SingleImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B47E453E299D52F40091801F /* SingleImageViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,8 @@
 		B42701752933D417007AE4F7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B42701772933D417007AE4F7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B43BB5D4296B5B75002ED9C4 /* ImagesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListCell.swift; sourceTree = "<group>"; };
+		B47DDE84298E9947008F1E2E /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		B47E453E299D52F40091801F /* SingleImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleImageViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +64,8 @@
 			children = (
 				B42701692933D416007AE4F7 /* AppDelegate.swift */,
 				B427016B2933D416007AE4F7 /* SceneDelegate.swift */,
+				B468ADFA299EBC7100D4C9F5 /* SingleImageViewController */,
+				B47DDE88298EBD19008F1E2E /* Profile */,
 				B43BB5D6296B5E4E002ED9C4 /* ImagesList */,
 				B427016F2933D416007AE4F7 /* Main.storyboard */,
 				B42701722933D417007AE4F7 /* Assets.xcassets */,
@@ -76,6 +82,22 @@
 				B43BB5D4296B5B75002ED9C4 /* ImagesListCell.swift */,
 			);
 			path = ImagesList;
+			sourceTree = "<group>";
+		};
+		B468ADFA299EBC7100D4C9F5 /* SingleImageViewController */ = {
+			isa = PBXGroup;
+			children = (
+				B47E453E299D52F40091801F /* SingleImageViewController.swift */,
+			);
+			path = SingleImageViewController;
+			sourceTree = "<group>";
+		};
+		B47DDE88298EBD19008F1E2E /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				B47DDE84298E9947008F1E2E /* ProfileViewController.swift */,
+			);
+			path = Profile;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -151,7 +173,9 @@
 			files = (
 				B427016E2933D416007AE4F7 /* ImagesListViewController.swift in Sources */,
 				B43BB5D5296B5B75002ED9C4 /* ImagesListCell.swift in Sources */,
+				B47DDE85298E9947008F1E2E /* ProfileViewController.swift in Sources */,
 				B427016A2933D416007AE4F7 /* AppDelegate.swift in Sources */,
+				B47E453F299D52F40091801F /* SingleImageViewController.swift in Sources */,
 				B427016C2933D416007AE4F7 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -307,7 +331,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UIRequiresFullScreen = NO;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -339,7 +363,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UIRequiresFullScreen = NO;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
