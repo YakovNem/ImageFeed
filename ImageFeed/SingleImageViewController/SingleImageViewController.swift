@@ -5,7 +5,7 @@
 //  Created by Yakov Nemychenkov on 15.02.2023.
 //
 
-import Foundation
+
 import UIKit
 
 final class SingleImageViewController: UIViewController {
@@ -17,10 +17,8 @@ final class SingleImageViewController: UIViewController {
         }
     }
     
-    @IBOutlet var viewImage: UIImageView!
-    @IBOutlet  var scrollView: UIScrollView!
-    
-    
+    @IBOutlet private var viewImage: UIImageView!
+    @IBOutlet private var scrollView: UIScrollView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,17 +28,17 @@ final class SingleImageViewController: UIViewController {
         scrollView.maximumZoomScale = 1.25
     }
     
-    @IBAction func didTabBackButton(_ sender: Any) {
+    @IBAction private func didTabBackButton(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func didTabShareButton(_ sender: Any) {
-        let imageToShare = [ image! ]
-        let activityViewController = UIActivityViewController(activityItems: imageToShare, applicationActivities: nil)
+    @IBAction private func didTabShareButton(_ sender: Any) {
+        guard let image = image else { return }
+        let imageToShare = [ image ]
+        let activityViewController = UIActivityViewController(activityItems: imageToShare as [Any], applicationActivities: nil)
         activityViewController.popoverPresentationController?.sourceView = self.view
         self.present(activityViewController, animated: true, completion: nil)
     }
-    
     
     private func rescaleAndCenterImageInScrollView(image: UIImage) {
         let minZoomScale = scrollView.minimumZoomScale

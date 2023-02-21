@@ -16,6 +16,8 @@
 		B43BB5D5296B5B75002ED9C4 /* ImagesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43BB5D4296B5B75002ED9C4 /* ImagesListCell.swift */; };
 		B47DDE85298E9947008F1E2E /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B47DDE84298E9947008F1E2E /* ProfileViewController.swift */; };
 		B47E453F299D52F40091801F /* SingleImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B47E453E299D52F40091801F /* SingleImageViewController.swift */; };
+		B4EAD51729A4E773009EBCD1 /* SF-Pro-Text-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = B4EAD51629A4E773009EBCD1 /* SF-Pro-Text-Bold.otf */; };
+		B4EAD51929A4E77F009EBCD1 /* SF-Pro-Text-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = B4EAD51829A4E77F009EBCD1 /* SF-Pro-Text-Regular.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +32,8 @@
 		B43BB5D4296B5B75002ED9C4 /* ImagesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListCell.swift; sourceTree = "<group>"; };
 		B47DDE84298E9947008F1E2E /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		B47E453E299D52F40091801F /* SingleImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleImageViewController.swift; sourceTree = "<group>"; };
+		B4EAD51629A4E773009EBCD1 /* SF-Pro-Text-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Bold.otf"; sourceTree = "<group>"; };
+		B4EAD51829A4E77F009EBCD1 /* SF-Pro-Text-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Regular.otf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,9 +72,9 @@
 				B47DDE88298EBD19008F1E2E /* Profile */,
 				B43BB5D6296B5E4E002ED9C4 /* ImagesList */,
 				B427016F2933D416007AE4F7 /* Main.storyboard */,
-				B42701722933D417007AE4F7 /* Assets.xcassets */,
-				B42701742933D417007AE4F7 /* LaunchScreen.storyboard */,
 				B42701772933D417007AE4F7 /* Info.plist */,
+				B42701742933D417007AE4F7 /* LaunchScreen.storyboard */,
+				B4EAD51529A4E5A2009EBCD1 /* Resources */,
 			);
 			path = ImageFeed;
 			sourceTree = "<group>";
@@ -98,6 +102,24 @@
 				B47DDE84298E9947008F1E2E /* ProfileViewController.swift */,
 			);
 			path = Profile;
+			sourceTree = "<group>";
+		};
+		B4EAD4E729A4DCB8009EBCD1 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				B4EAD51629A4E773009EBCD1 /* SF-Pro-Text-Bold.otf */,
+				B4EAD51829A4E77F009EBCD1 /* SF-Pro-Text-Regular.otf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		B4EAD51529A4E5A2009EBCD1 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B4EAD4E729A4DCB8009EBCD1 /* Fonts */,
+				B42701722933D417007AE4F7 /* Assets.xcassets */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -159,7 +181,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				B42701762933D417007AE4F7 /* LaunchScreen.storyboard in Resources */,
+				B4EAD51929A4E77F009EBCD1 /* SF-Pro-Text-Regular.otf in Resources */,
 				B42701732933D417007AE4F7 /* Assets.xcassets in Resources */,
+				B4EAD51729A4E773009EBCD1 /* SF-Pro-Text-Bold.otf in Resources */,
 				B42701712933D416007AE4F7 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -330,8 +354,9 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UIRequiresFullScreen = NO;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -362,8 +387,9 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UIRequiresFullScreen = NO;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

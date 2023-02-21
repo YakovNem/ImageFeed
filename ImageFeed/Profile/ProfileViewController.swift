@@ -5,16 +5,8 @@
 //  Created by Yakov Nemychenkov on 04.02.2023.
 //
 import UIKit
-import Foundation
-
 final class ProfileViewController: UIViewController {
-    //    @IBOutlet weak var profileImage: UIImageView!
-    //    @IBOutlet weak var addressLabel: UILabel!
-    //    @IBOutlet weak var nameLabel: UILabel!
-    //    @IBOutlet weak var textLabel: UILabel!
-    //    @IBOutlet weak var logoutButton: UIButton!
-    //    @IBAction func didTapLogoutButton(_ sender: UIButton) {
-    //    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         let image = UIImage(named: "avatarProfile")
@@ -63,7 +55,7 @@ final class ProfileViewController: UIViewController {
         
         let logoutButton = UIButton.systemButton(with: UIImage(systemName:"ipad.and.arrow.forward")!,
                                                  target: self,
-                                                 action: #selector(Self.didTabLogountButton)
+                                                 action: #selector(Self.didTapLogout)
         )
         logoutButton.tintColor = UIColor(red: 0.961, green: 0.42, blue: 0.424, alpha: 1)
         logoutButton.translatesAutoresizingMaskIntoConstraints = false
@@ -76,7 +68,7 @@ final class ProfileViewController: UIViewController {
         
     }
     @objc
-    private func didTabLogountButton() {
+    private func didTapLogout() {
         
     }
 }
