@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Vector" translatesAutoresizingMaskIntoConstraints="NO" id="nh7-Mz-ZTV">
-                                <rect key="frame" x="157.66666666666666" y="389.66666666666663" width="75" height="77.666666666666657"/>
+                                <rect key="frame" x="157.66666666666666" y="389.66666666666669" width="75" height="78"/>
                                 <color key="backgroundColor" name="blackgroundColor"/>
                             </imageView>
                         </subviews>
