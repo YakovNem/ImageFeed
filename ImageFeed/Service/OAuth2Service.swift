@@ -6,17 +6,16 @@
 //
 
 import Foundation
-fileprivate let unsplashAuthorizePostURLString = "https://unsplash.com/oauth/token"
+
 final class OAuth2Service {
-   
+
     static let shared = OAuth2Service()
-    
     
     enum NetworkError: Error {
         case codeError
     }
     func fetchAuthToken (_ code: String, completion: @escaping (Result<String, Error>) -> Void) {
-        var urlComponents = URLComponents(string: unsplashAuthorizePostURLString)!
+        var urlComponents = URLComponents(string: Constants.unsplashAuthorizePostURLString)!
         urlComponents.queryItems = [
             URLQueryItem(name: "client_id", value: Constants.accessKey),
             URLQueryItem(name: "client_secret", value: Constants.secretKey),

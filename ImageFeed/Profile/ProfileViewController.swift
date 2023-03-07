@@ -65,6 +65,7 @@ final class ProfileViewController: UIViewController {
         logoutButton.leadingAnchor.constraint(greaterThanOrEqualTo: profileImageView.trailingAnchor).isActive = true
         logoutButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 55).isActive = true
         logoutButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
+        logoutButton.centerXAnchor.constraint(equalTo: profileImageView.centerXAnchor).isActive = true
         
     }
     @objc
@@ -72,3 +73,4 @@ final class ProfileViewController: UIViewController {
         
     }
 }
+

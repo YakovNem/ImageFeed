@@ -50,7 +50,7 @@ extension SplashViewController {
             guard
                 let navigationController = segue.destination as? UINavigationController,
                 let viewController = navigationController.viewControllers[0] as? AuthViewController
-            else { fatalError("Failed to prepare for \(showAuthenticationScreenSegueIdentifier)")}
+            else { return assertionFailure("Failed to prepare for \(showAuthenticationScreenSegueIdentifier)")}
             viewController.delegate = self
         } else {
             super.prepare(for: segue, sender: true)
@@ -65,16 +65,4 @@ extension SplashViewController: AuthViewControllerDelegate {
         }
     }
 
-//    private func fetchOAuthToken(_ code: String) {
-//        OAuth2Service.shared.fetchAuthToken(code) { result in
-//            DispatchQueue.main.async { [self] in
-//                switch result {
-//                case .success:
-//                    self.switchToTabBarConrtoller()
-//                case .failure:
-//                    break
-//                }
-//            }
-//        }
-//    }
-//}
+
