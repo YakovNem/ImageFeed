@@ -20,3 +20,4 @@ enum CodingKeys: String, CodingKey {
     case createdAt = "created_at"
     }
 }
+

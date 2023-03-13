@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Rpr-RO-WeJ">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -18,7 +18,7 @@
         <!--Images List View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ImagesListViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ImagesListViewController" id="BYZ-38-t0r" customClass="ImagesListViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -109,7 +109,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="23t-Qf-NFt">
             <objects>
-                <tabBarController storyboardIdentifier="TabBarViewController" id="PsI-Fq-2EZ" customClass="TabBarController" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="TabBarController" id="PsI-Fq-2EZ" customClass="TabBarController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="a7F-Mj-rgQ">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -120,56 +120,10 @@
                             <color key="backgroundColor" red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </tabBarAppearance>
                     </tabBar>
-                    <connections>
-                        <segue destination="QQW-e2-ZWt" kind="relationship" relationship="viewControllers" id="Vfd-Cd-oND"/>
-                        <segue destination="4oE-xJ-aIH" kind="relationship" relationship="viewControllers" id="dQV-sm-iGH"/>
-                    </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="s6h-u9-nTA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-3003" y="802"/>
-        </scene>
-        <!--Profile View Controller-->
-        <scene sceneID="1NF-mk-0sr">
-            <objects>
-                <viewController id="4oE-xJ-aIH" customClass="ProfileViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="nNO-uF-Z1u">
-                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="3gF-Ic-ttq"/>
-                        <color key="backgroundColor" name="black"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="" image="tab_profile" id="1nJ-oz-54y"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Zsl-g1-LGS" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1543" y="533"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="EpI-m7-2oY">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="QQW-e2-ZWt" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="tab_editorial_active" id="rmC-vv-3PL" userLabel="Tab Bar Item">
-                        <color key="badgeColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    </tabBarItem>
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="XNK-cq-VTd">
-                        <rect key="frame" x="0.0" y="47" width="390" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <navigationBarAppearance key="standardAppearance">
-                            <color key="backgroundColor" red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        </navigationBarAppearance>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="63Q-qf-ckZ"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="oxj-5g-qRW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1543" y="1380"/>
         </scene>
         <!--Single Image View Controller-->
         <scene sceneID="OUS-Lb-chs">
@@ -251,7 +205,7 @@
         <!--Auth View Controller-->
         <scene sceneID="LUJ-Ai-i56">
             <objects>
-                <viewController id="lzU-ZS-r4F" customClass="AuthViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AuthViewController" id="lzU-ZS-r4F" customClass="AuthViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="S7L-HX-UpG">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -379,52 +333,19 @@
             </objects>
             <point key="canvasLocation" x="-3003" y="-233"/>
         </scene>
-        <!--Splash View Controller-->
-        <scene sceneID="CRa-rb-YvP">
-            <objects>
-                <viewController storyboardIdentifier="SplashViewController" id="Rpr-RO-WeJ" customClass="SplashViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="LA3-JS-qba">
-                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Vector" translatesAutoresizingMaskIntoConstraints="NO" id="Jg3-2B-Cgr">
-                                <rect key="frame" x="157.66666666666666" y="389.66666666666669" width="75" height="78"/>
-                            </imageView>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="FIe-lL-6fC"/>
-                        <color key="backgroundColor" name="blackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="Jg3-2B-Cgr" firstAttribute="centerY" secondItem="FIe-lL-6fC" secondAttribute="centerY" id="Nru-I2-Nyu"/>
-                            <constraint firstItem="Jg3-2B-Cgr" firstAttribute="centerX" secondItem="FIe-lL-6fC" secondAttribute="centerX" id="dwX-RM-ypQ"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <segue destination="hAv-qC-fr5" kind="presentation" identifier="ShowAuthenticationScreen" modalPresentationStyle="fullScreen" id="VdI-LQ-yUl"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="wMT-xj-lKJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-5197" y="353"/>
-        </scene>
     </scenes>
     <resources>
         <image name="0" width="200" height="132"/>
         <image name="Active" width="42" height="42"/>
-        <image name="Vector" width="75" height="78"/>
         <image name="backButton" width="9" height="16"/>
         <image name="nav_back_button" width="9" height="15.666666984558105"/>
         <image name="sharingButton" width="51" height="50"/>
-        <image name="tab_editorial_active" width="20" height="22"/>
-        <image name="tab_profile" width="24" height="24"/>
         <image name="vectorAuth" width="60" height="60"/>
         <namedColor name="AccentColor">
             <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="black">
             <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="blackgroundColor">
-            <color red="0.32899999618530273" green="0.32400000095367432" blue="0.4779999852180481" alpha="0.33000001311302185" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
