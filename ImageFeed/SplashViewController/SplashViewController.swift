@@ -96,11 +96,10 @@ extension SplashViewController: AuthViewControllerDelegate {
             switch result {
             case .success:
                 self.switchToTabBarConrtoller()
-                UIBlockingProgressHUD.dismiss()
             case .failure:
                 self.showAlert()
-                UIBlockingProgressHUD.dismiss()
             }
+            UIBlockingProgressHUD.dismiss()
         }
     }
     private func fetchProfile(token: String) {
@@ -115,9 +114,9 @@ extension SplashViewController: AuthViewControllerDelegate {
                 self.switchToTabBarConrtoller()
             case .failure:
                 self.showAlert()
-                UIBlockingProgressHUD.dismiss()
                 break
             }
+            UIBlockingProgressHUD.dismiss()
         }
     }
     private func fetchProfileImageURL (username: String) {
@@ -125,13 +124,12 @@ extension SplashViewController: AuthViewControllerDelegate {
             guard let self = self else { return }
             switch result {
             case .success:
-                UIBlockingProgressHUD.dismiss()
                 self.switchToTabBarConrtoller()
             case .failure:
                 self.showAlert()
-                UIBlockingProgressHUD.dismiss()
                 break
             }
+            UIBlockingProgressHUD.dismiss()
         }
     }
 }

@@ -45,9 +45,9 @@ final class ProfileService {
                     do {
                         let decode = try JSONDecoder().decode(ProfileResult.self, from: data)
                         let profile =
-                        Profile.init(username: decode.user_name,
-                                     name: "\(decode.first_name) \(decode.last_name)",
-                                     login: "@\(decode.user_name)",
+                        Profile.init(username: decode.userName,
+                                     name: "\(decode.firstName) \(decode.lastName)",
+                                     login: "@\(decode.userName)",
                                      bio: decode.bio)
                         completion(.success(profile))
                     } catch {
@@ -55,9 +55,7 @@ final class ProfileService {
                     }
                 }
                 self.task = nil
-                if error != nil {
-                    self.lastCode = nil
-                }
+                self.lastCode = nil
             }
         }
         self.task = task
@@ -75,16 +73,16 @@ final class ProfileService {
 }
 
 private struct ProfileResult: Codable {
-    let user_name: String
-    let first_name: String
-    let last_name: String
+    let userName: String
+    let firstName: String
+    let lastName: String
     let bio: String?
     
 private enum CodingKeys: String, CodingKey {
-        case user_name = "username"
-        case first_name = "first_name"
-        case last_name = "last_name"
-        case bio = "bio"
+    case userName = "username"
+    case firstName = "first_name"
+    case lastName = "last_name"
+    case bio
     }
 }
 

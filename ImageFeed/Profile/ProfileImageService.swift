@@ -9,22 +9,20 @@ import Foundation
 import Kingfisher
 final class ProfileImageService {
     static let shared = ProfileImageService()
-    
     private var urlSession = URLSession.shared
     private var task: URLSessionTask?
     private var lastUsername: String?
     private var lastCode: String?
-    
     private(set) var avatarURL: String?
-    
     private var profileImage: ProfileImage?
     
     static let didChangeNotification = Notification.Name("ProfileImageProviderDidChange")
     
     func fetchProfileImageURL(username: String, token: String, _ completion: @escaping (Result<String, Error>) -> Void) {
         assert(Thread.isMainThread)
-        if lastUsername == username { return }
-        if lastCode == token { return }
+        guard
+        lastUsername == username,
+        lastCode == token else { return }
         task?.cancel()
         lastUsername = username
         lastCode = token
@@ -35,7 +33,6 @@ final class ProfileImageService {
                     completion(.failure(error))
                     return
                 }
-                
                 
                 if let response = response as? HTTPURLResponse,
                    response.statusCode < 200 || response.statusCode >= 300 {
@@ -58,10 +55,8 @@ final class ProfileImageService {
                     }
                 }
                 self.task = nil
-                if error != nil {
-                    self.lastUsername = nil
-                    self.lastCode = nil
-                }
+                self.lastUsername = nil
+                self.lastCode = nil
             }
         }
         self.task = task
