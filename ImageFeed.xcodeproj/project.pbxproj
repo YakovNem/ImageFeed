@@ -32,6 +32,7 @@
 		B4BDF5F229BF2ABD00B99DE6 /* URLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4BDF5F129BF2ABD00B99DE6 /* URLSession.swift */; };
 		B4BDF5F529BF458A00B99DE6 /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = B4BDF5F429BF458A00B99DE6 /* SwiftKeychainWrapper */; };
 		B4BDF5F929BF4D8C00B99DE6 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4BDF5F829BF4D8C00B99DE6 /* TabBarController.swift */; };
+		B4F3BC4529C0A94C00347A29 /* ImagesListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4F3BC4429C0A94C00347A29 /* ImagesListService.swift */; };
 		B4FD23D029BE2DFF008304F1 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = B4FD23CF29BE2DFF008304F1 /* Kingfisher */; };
 /* End PBXBuildFile section */
 
@@ -61,6 +62,7 @@
 		B4B0CB4E29AB6F0F00DD6F61 /* OAuthTokenResponseBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthTokenResponseBody.swift; sourceTree = "<group>"; };
 		B4BDF5F129BF2ABD00B99DE6 /* URLSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSession.swift; sourceTree = "<group>"; };
 		B4BDF5F829BF4D8C00B99DE6 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		B4F3BC4429C0A94C00347A29 /* ImagesListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +129,7 @@
 			children = (
 				B427016D2933D416007AE4F7 /* ImagesListViewController.swift */,
 				B43BB5D4296B5B75002ED9C4 /* ImagesListCell.swift */,
+				B4F3BC4429C0A94C00347A29 /* ImagesListService.swift */,
 			);
 			path = ImagesList;
 			sourceTree = "<group>";
@@ -309,6 +312,7 @@
 				B4A2777429BCAB4D00AFB02D /* ProfileImageService.swift in Sources */,
 				B47E453F299D52F40091801F /* SingleImageViewController.swift in Sources */,
 				B414782329A8B98E008B2D93 /* WebViewViewController.swift in Sources */,
+				B4F3BC4529C0A94C00347A29 /* ImagesListService.swift in Sources */,
 				B4B0CB4B29AB6AA000DD6F61 /* OAuth2Service.swift in Sources */,
 				B427016C2933D416007AE4F7 /* SceneDelegate.swift in Sources */,
 				B4A2776C29BB4E7C00AFB02D /* UIBlockingProgressHUD.swift in Sources */,
