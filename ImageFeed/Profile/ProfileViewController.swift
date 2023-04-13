@@ -6,13 +6,14 @@
 //
 import UIKit
 import Kingfisher
+
 final class ProfileViewController: UIViewController {
     
     private let profileService = ProfileService.shared
     private let oAuthTokenStorage = OAuth2TokenStorage()
     private let profileImageService = ProfileImageService.shared
     private var profileImageServiceObserver: NSObjectProtocol?
-   
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "black")
@@ -62,7 +63,7 @@ final class ProfileViewController: UIViewController {
                 print(error)
             }
         }
-       
+        
         
         profileImageServiceObserver = NotificationCenter.default
             .addObserver(forName: ProfileImageService.didChangeNotification, object: nil, queue: .main) { [weak self] _ in
@@ -123,11 +124,33 @@ final class ProfileViewController: UIViewController {
         guard
             let profileImageURL = profileImageService.avatarURL,
             let url = URL(string: profileImageURL) else { return }
-            profileImage.kf.setImage(with: url)
+        profileImage.kf.setImage(with: url)
     }
     
     @objc
     private func didTapLogout() {
-        
+        alertLogout()
+    }
+    
+    private func logout () {
+        OAuth2TokenStorage.clean()
+        OAuth2TokenStorage.removeToken()
+        guard let window = UIApplication.shared.windows.first else {
+            fatalError("Invalid Configuration") }
+        window.rootViewController = SplashViewController()
+    }
+    
+    private func alertLogout () {
+        let alert = UIAlertController(title: "Пока, пока!",
+                                      message: "Уверены, что хотите выйти?",
+                                      preferredStyle: .alert)
+        let retryAction = UIAlertAction(title: "Да", style: .default) { [weak self] _ in
+            self?.logout()
+        }
+        let cancelAction = UIAlertAction(title: "Нет", style: .cancel)
+        alert.addAction(cancelAction)
+        alert.addAction(retryAction)
+        present(alert, animated: true)
     }
 }
+

@@ -78,11 +78,11 @@ private struct ProfileResult: Codable {
     let lastName: String
     let bio: String?
     
-private enum CodingKeys: String, CodingKey {
-    case userName = "username"
-    case firstName = "first_name"
-    case lastName = "last_name"
-    case bio
+    private enum CodingKeys: String, CodingKey {
+        case userName = "username"
+        case firstName = "first_name"
+        case lastName = "last_name"
+        case bio
     }
 }
 

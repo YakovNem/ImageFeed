@@ -21,8 +21,8 @@ final class ProfileImageService {
     func fetchProfileImageURL(username: String, token: String, _ completion: @escaping (Result<String, Error>) -> Void) {
         assert(Thread.isMainThread)
         guard
-        lastUsername == username,
-        lastCode == token else { return }
+            lastUsername == username,
+            lastCode == token else { return }
         task?.cancel()
         lastUsername = username
         lastCode = token
@@ -71,26 +71,27 @@ final class ProfileImageService {
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }
+}
+
+struct UserResult: Codable {
+    let profileImage: ProfileImage
     
-    struct UserResult: Codable {
-        let profileImage: ProfileImage
-        
-        enum CodingKeys: String, CodingKey {
-            case profileImage = "profile_image"
-        }
-    }
-    
-    struct ProfileImage: Codable {
-        var small: String?
-        
-        enum CodingKeys: String, CodingKey {
-            case small = "small"
-        }
-    }
-    enum NetworkError: Error {
-        case invalidURL
-        case invalidData
-        case decodingError
+    enum CodingKeys: String, CodingKey {
+        case profileImage = "profile_image"
     }
 }
+
+struct ProfileImage: Codable {
+    var small: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case small = "small"
+    }
+}
+enum NetworkError: Error {
+    case invalidURL
+    case invalidData
+    case decodingError
+}
+
 

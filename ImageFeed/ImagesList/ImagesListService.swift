@@ -10,12 +10,12 @@ import UIKit
 final class ImagesListService {
     private (set) var photos: [Photos] = []
     private var currentPage: Int = 0
+    private let perPage = 10
     private var lastLoadedPege: Int?
     private var task: URLSessionTask?
     private var lastCode: String?
     private var urlSession = URLSession.shared
     private var isLoading: Bool = false
-    
     
     enum NetworkError: Error {
         case codeError
@@ -23,53 +23,54 @@ final class ImagesListService {
     
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
     
-    private func fetchPhotosNextPage() {
+    func fetchPhotosNextPage() {
+        assert(Thread.isMainThread)
         guard !isLoading else { return }
         isLoading = true
-        currentPage += 1
         
         fetchPhotos(token: OAuth2TokenStorage().token!, page: currentPage) { [weak self] result in
-            DispatchQueue.main.async {
-                guard let self = self else { return }
-                switch result {
-                case .success(let photoResults):
-                    let newPhotos = photoResults.map{ photoResults -> Photos in
-                        let size = CGSize(width: photoResults.width, height: photoResults.height)
-                        let dateFormatter = DateFormatter()
-                        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-                        let createdAt = dateFormatter.date(from: photoResults.createdAt)
-                        
-                        return Photos(
-                            id: photoResults.id,
-                            size: size,
-                            createdAt: createdAt,
-                            welcomeDescription: photoResults.description,
-                            thumbImageURL: photoResults.urls.thumb,
-                            largeImageURL: photoResults.urls.regular,
-                            isLiked: photoResults.likedByUser)
-                    }
+            guard let self = self else { return }
+            self.isLoading = false
+            switch result {
+            case .success(let photoResults):
+                let newPhotos = photoResults.map{ photoResults -> Photos in
+                    let size = CGSize(width: photoResults.width, height: photoResults.height)
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+                    let createdAt = dateFormatter.date(from: photoResults.createdAt)
+                    
+                    return Photos(
+                        id: photoResults.id,
+                        size: size,
+                        createdAt: createdAt,
+                        welcomeDescription: photoResults.description,
+                        thumbImageURL: photoResults.urls.thumb,
+                        largeImageURL: photoResults.urls.full,
+                        isLiked: photoResults.likedByUser)
+                }
+                DispatchQueue.main.async {
                     self.photos.append(contentsOf: newPhotos)
                     NotificationCenter.default.post(name: ImagesListService.didChangeNotification, object: self)
-                case .failure(let error):
-                    print("Error fetching photos: \(error.localizedDescription)")
                 }
+            case .failure(let error):
+                print("Error fetching photos: \(error.localizedDescription)")
             }
+            self.isLoading = false
+            self.currentPage += 1
         }
     }
-    
     private func fetchPhotos(token: String, page: Int, completion: @escaping (Result<[PhotoResults], Error>) -> Void) {
         assert(Thread.isMainThread)
         if lastCode == token { return }
         task?.cancel()
         lastCode = token
-        let request = makeRequestPhotos(page: page, token: token)
+        let request = makeRequestPhotos(page: page, perPage: perPage, token: token)
         let task = urlSession.dataTask(with: request) { data, response, error in
             DispatchQueue.main.async {
                 if let error = error {
                     completion(.failure(error))
                     return
                 }
-                
                 
                 if let response = response as? HTTPURLResponse,
                    response.statusCode < 200 || response.statusCode >= 300 {
@@ -92,15 +93,64 @@ final class ImagesListService {
         self.task = task
         task.resume()
     }
-}
-
-private func makeRequestPhotos(page: Int, token: String) -> URLRequest {
-    let unsplashPhotosURLString = Constants.defaultBaseURLString + "photos"
-    guard let url = URL(string: unsplashPhotosURLString) else { fatalError("Failed to create URL") }
-    var requset = URLRequest(url: url)
-    requset.httpMethod = "GET"
-    requset.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-    return requset
+    
+    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
+        assert(Thread.isMainThread)
+        task?.cancel()
+        
+        guard let token = OAuth2TokenStorage().token else {
+            completion(.failure(NetworkError.codeError))
+            return
+        }
+        
+        let url = URL(string: "\(Constants.defaultBaseURLString)/photos/\(photoId)/like")!
+        var request = URLRequest(url: url)
+        request.httpMethod = isLike ? "POST" : "DELETE"
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            DispatchQueue.main.async {
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+                
+                if let response = response as? HTTPURLResponse,
+                   response.statusCode < 200 || response.statusCode >= 300 {
+                    completion(.failure(NetworkError.codeError))
+                    return
+                }
+                
+                if let index = self.photos.firstIndex(where: { $0.id == photoId }) {
+                    let photo = self.photos[index]
+                    let newPhoto = Photos(
+                        id: photo.id,
+                        size: photo.size,
+                        createdAt: photo.createdAt,
+                        welcomeDescription: photo.welcomeDescription,
+                        thumbImageURL: photo.thumbImageURL,
+                        largeImageURL: photo.largeImageURL,
+                        isLiked: isLike
+                    )
+                    self.photos = self.photos.withReplaced(itemAt: index, newValue: newPhoto)
+                    NotificationCenter.default.post(name: ImagesListService.didChangeNotification, object: self)
+                }
+                completion(.success(()))
+                self.task = nil
+            }
+        }
+        self.task = task
+        task.resume()
+    }
+    
+    private func makeRequestPhotos(page: Int, perPage: Int, token: String) -> URLRequest {
+        let unsplashPhotosURLString = Constants.defaultBaseURLString + "/photos?page=\(page)&&per_page=\(perPage)"
+        guard let url = URL(string: unsplashPhotosURLString) else { fatalError("Failed to create URL") }
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        return request
+    }
 }
 
 struct Photos {
@@ -116,35 +166,37 @@ struct Photos {
 struct PhotoResults: Codable {
     let id: String
     let createdAt: String
-    let width: Int
-    let height: Int
+    let width: CGFloat
+    let height: CGFloat
     let description: String?
     let likedByUser: Bool
     let urls: UrlsResult
     
     enum CodingKeys: String, CodingKey {
-        case id
+        case id = "id"
         case createdAt = "created_at"
         case width
         case height
         case description
-        case likedByUser
+        case likedByUser = "liked_by_user"
         case urls
     }
 }
 
 struct UrlsResult: Codable {
-    let raw: String
     let full: String
-    let regular: String
-    let small: String
     let thumb: String
     
-    private enum CodingKeys: String, CodingKey {
-        case raw
+    enum CodingKeys: String, CodingKey {
         case full
-        case regular
-        case small
         case thumb
+    }
+}
+
+extension Array {
+    func withReplaced(itemAt index: Index, newValue: Element) -> [Element] {
+        var newArray = self
+        newArray[index] = newValue
+        return newArray
     }
 }
