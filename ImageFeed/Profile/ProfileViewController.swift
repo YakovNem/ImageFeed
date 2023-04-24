@@ -7,82 +7,28 @@
 import UIKit
 import Kingfisher
 
-protocol ProfileViewControllerProtocol: AnyObject {
-    func updateProfileLabels(name: String, login: String, bio: String?)
-    func updateProfileImage(with url: URL)
-}
-
-final class ProfileViewController: UIViewController & ProfileViewControllerProtocol {
+final class ProfileViewController: UIViewController {
     
-    private let profileImage = UIImageView()
-    private let nameLabel = UILabel()
-    private let addressLabel = UILabel()
-    private let textLabel = UILabel()
-    private var logoutButton: UIButton!
-    
-    private let presenter: ProfilePresenterProtocol
+    private let profileService = ProfileService.shared
+    private let oAuthTokenStorage = OAuth2TokenStorage()
+    private let profileImageService = ProfileImageService.shared
     private var profileImageServiceObserver: NSObjectProtocol?
-       
-       init(presenter: ProfilePresenterProtocol) {
-           self.presenter = presenter
-           super.init(nibName: nil, bundle: nil)
-       }
-       
-       required init?(coder: NSCoder) {
-           fatalError("init(coder:) has not been implemented")
-       }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setLayout()
-        presenter.fetchProfile()
-        
-        profileImageServiceObserver = NotificationCenter.default
-            .addObserver(forName: ProfileImageService.didChangeNotification, object: nil, queue: .main) { [weak self] _ in
-                guard let self = self else { return }
-                self.presenter.updateAvatar()
-            }
-        presenter.updateAvatar()
-    }
-    
-    private func setLayout() {
         view.backgroundColor = UIColor(named: "black")
-        
-        profileImage.image = UIImage(named: "avatarProfile")
-        profileImage.backgroundColor = .white
-        profileImage.layer.masksToBounds = true
-        profileImage.layer.cornerRadius = 35
-        profileImage.translatesAutoresizingMaskIntoConstraints = false
-        
-        nameLabel.text = "Екатерина Новикова"
-        nameLabel.font = UIFont.boldSystemFont(ofSize: 23)
-        nameLabel.textColor = .white
-        nameLabel.backgroundColor = .clear
-        nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        addressLabel.text = "@ekaterina_nov"
-        addressLabel.font = UIFont.systemFont(ofSize: 13)
-        addressLabel.textColor = .gray
-        addressLabel.backgroundColor = .clear
-        addressLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        textLabel.text = "Hello, world!"
-        textLabel.font = UIFont.systemFont(ofSize: 13)
-        textLabel.textColor = .white
-        textLabel.backgroundColor = .clear
-        textLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        logoutButton = UIButton.systemButton(
-            with: UIImage(systemName: "ipad.and.arrow.forward")!,
-            target: self,
-            action: #selector(self.didTapLogout))
-        logoutButton.tintColor = UIColor(red: 0.961, green: 0.42, blue: 0.424, alpha: 1)
-        logoutButton.translatesAutoresizingMaskIntoConstraints = false
-        
         view.addSubview(profileImage)
+        
+        let nameLabel = createNameLabel(whithText: "Екатерина Новикова", font: UIFont.boldSystemFont(ofSize: 23), textColor: .white, backgroundColor: .clear)
         view.addSubview(nameLabel)
-        view.addSubview(addressLabel)
+        
+        let adressLabel = createNameLabel(whithText: "@ekaterina_nov", font: UIFont.systemFont(ofSize: 13), textColor: .gray, backgroundColor: .clear)
+        view.addSubview(adressLabel)
+        
+        let textLabel = createTextLabel(whithText: "Hello, world!", font: UIFont.systemFont(ofSize: 13), textColor: .white, backgroundColor: .clear)
         view.addSubview(textLabel)
+        
+        let logoutButton = createLogoutButton()
         view.addSubview(logoutButton)
         
         NSLayoutConstraint.activate([profileImage.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
@@ -92,11 +38,11 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
                                      nameLabel.leadingAnchor.constraint(equalTo: profileImage.leadingAnchor),
                                      nameLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 16),
                                      nameLabel.topAnchor.constraint(equalTo: profileImage.bottomAnchor, constant: 8),
-                                     addressLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
-                                     addressLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
-                                     addressLabel.trailingAnchor.constraint(equalTo: nameLabel.trailingAnchor),
+                                     adressLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
+                                     adressLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
+                                     adressLabel.trailingAnchor.constraint(equalTo: nameLabel.trailingAnchor),
                                      textLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
-                                     textLabel.topAnchor.constraint(equalTo: addressLabel.bottomAnchor, constant: 8),
+                                     textLabel.topAnchor.constraint(equalTo: adressLabel.bottomAnchor, constant: 8),
                                      textLabel.trailingAnchor.constraint(equalTo: nameLabel.trailingAnchor),
                                      logoutButton.heightAnchor.constraint(equalToConstant: 22),
                                      logoutButton.widthAnchor.constraint(equalToConstant: 20),
@@ -105,33 +51,96 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
                                      logoutButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
                                      
                                     ])
+        
+        profileService.fetchProfile(oAuthTokenStorage.token!) { [weak self] result in
+            guard self != nil else { return }
+            switch result {
+            case .success(let profile):
+                nameLabel.text = profile.name
+                adressLabel.text = profile.login
+                textLabel.text = profile.bio
+            case .failure(let error):
+                print(error)
+            }
+        }
+        
+        
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(forName: ProfileImageService.didChangeNotification, object: nil, queue: .main) { [weak self] _ in
+                guard let self = self else { return }
+                self.updateAvatar()
+            }
+        updateAvatar()
     }
     
-    func updateProfileLabels(name: String, login: String, bio: String?) {
-        nameLabel.text = name
-        addressLabel.text = login
-        textLabel.text = bio
+    private var profileImage: UIImageView = {
+        let profileImage = UIImageView()
+        profileImage.image = UIImage(named: "avatarProfile")
+        profileImage.backgroundColor = .white
+        profileImage.layer.masksToBounds = true
+        profileImage.layer.cornerRadius = 35
+        profileImage.translatesAutoresizingMaskIntoConstraints = false
+        return profileImage
+    }()
+    
+    private func createNameLabel (whithText text: String, font: UIFont, textColor: UIColor, backgroundColor: UIColor) -> UILabel {
+        let nameLabel = UILabel()
+        nameLabel.text = text
+        nameLabel.font = font
+        nameLabel.textColor = textColor
+        nameLabel.backgroundColor = backgroundColor
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        return nameLabel
     }
     
-    func updateProfileImage(with url: URL) {
+    private func createAdressLabel (whithText text: String, font: UIFont, textColor: UIColor, backgroundColor: UIColor) -> UILabel {
+        let adressLabel = UILabel()
+        adressLabel.text = text
+        adressLabel.font = font
+        adressLabel.textColor = textColor
+        adressLabel.backgroundColor = backgroundColor
+        adressLabel.translatesAutoresizingMaskIntoConstraints = false
+        return adressLabel
+    }
+    
+    private func createTextLabel (whithText text: String, font: UIFont, textColor: UIColor, backgroundColor: UIColor) -> UILabel {
+        let textLabel = UILabel()
+        textLabel.text = text
+        textLabel.font = font
+        textLabel.textColor = textColor
+        textLabel.backgroundColor = backgroundColor
+        textLabel.translatesAutoresizingMaskIntoConstraints = false
+        return textLabel
+    }
+    
+    private func createLogoutButton() -> UIButton {
+        let logoutButton = UIButton.systemButton(with: UIImage(systemName: "ipad.and.arrow.forward")!, target: self, action: #selector(self.didTapLogout))
+        logoutButton.tintColor = UIColor(red: 0.961, green: 0.42, blue: 0.424, alpha: 1)
+        logoutButton.translatesAutoresizingMaskIntoConstraints = false
+        return logoutButton
+    }
+    
+    private func updateAvatar() {
+        guard
+            let profileImageURL = profileImageService.avatarURL,
+            let url = URL(string: profileImageURL) else { return }
         profileImage.kf.setImage(with: url)
     }
-        
+    
     @objc
     private func didTapLogout() {
         alertLogout()
     }
     
     private func logout () {
-        WebViewViewController.clean()
+        OAuth2TokenStorage.clean()
         OAuth2TokenStorage.removeToken()
         guard let window = UIApplication.shared.windows.first else {
             fatalError("Invalid Configuration") }
         window.rootViewController = SplashViewController()
     }
     
-    //MARK: Alert
-    public func alertLogout () {
+    private func alertLogout () {
         let alert = UIAlertController(title: "Пока, пока!",
                                       message: "Уверены, что хотите выйти?",
                                       preferredStyle: .alert)
@@ -144,3 +153,4 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         present(alert, animated: true)
     }
 }
+

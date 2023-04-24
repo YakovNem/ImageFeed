@@ -61,7 +61,7 @@ final class ImagesListService {
     }
     private func fetchPhotos(token: String, page: Int, completion: @escaping (Result<[PhotoResults], Error>) -> Void) {
         assert(Thread.isMainThread)
-//        if lastCode == token { return }
+        if lastCode == token { return }
         task?.cancel()
         lastCode = token
         let request = makeRequestPhotos(page: page, perPage: perPage, token: token)
@@ -103,7 +103,7 @@ final class ImagesListService {
             return
         }
         
-        let url = URL(string: "\(standard.defaultBaseURLString)/photos/\(photoId)/like")!
+        let url = URL(string: "\(Constants.defaultBaseURLString)/photos/\(photoId)/like")!
         var request = URLRequest(url: url)
         request.httpMethod = isLike ? "POST" : "DELETE"
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
@@ -144,7 +144,7 @@ final class ImagesListService {
     }
     
     private func makeRequestPhotos(page: Int, perPage: Int, token: String) -> URLRequest {
-        let unsplashPhotosURLString = standard.defaultBaseURLString + "/photos?page=\(page)&&per_page=\(perPage)"
+        let unsplashPhotosURLString = Constants.defaultBaseURLString + "/photos?page=\(page)&&per_page=\(perPage)"
         guard let url = URL(string: unsplashPhotosURLString) else { fatalError("Failed to create URL") }
         var request = URLRequest(url: url)
         request.httpMethod = "GET"

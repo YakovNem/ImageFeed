@@ -9,13 +9,10 @@ import Foundation
 import Kingfisher
 final class ProfileImageService {
     static let shared = ProfileImageService()
-    
     private var urlSession = URLSession.shared
     private var task: URLSessionTask?
-    
     private var lastUsername: String?
     private var lastCode: String?
-    
     private(set) var avatarURL: String?
     private var profileImage: ProfileImage?
     
@@ -67,7 +64,7 @@ final class ProfileImageService {
     }
     
     private func makeRequestProfileImage(username: String, token: String) -> URLRequest {
-        let unsplashProfileImageURLString = standard.defaultBaseURLString + "users/" + username
+        let unsplashProfileImageURLString = Constants.defaultBaseURLString + "users/" + username
         guard let url = URL(string: unsplashProfileImageURLString) else { fatalError("Failed to create URL") }
         var request = URLRequest(url: url)
         request.httpMethod = "GET"

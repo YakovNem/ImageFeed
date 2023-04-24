@@ -15,7 +15,6 @@ final class AuthViewController: UIViewController {
     private let showIdentifier = "ShowWebView"
     private let oAuth2TokenStorage = OAuth2TokenStorage()
     
-    
     weak var delegate: AuthViewControllerDelegate?
     
     @IBOutlet private var authorizationButton: UIButton!
@@ -25,10 +24,6 @@ final class AuthViewController: UIViewController {
             guard
                 let webViewViewController = segue.destination as? WebViewViewController
             else { return assertionFailure("Failed to prepare for \(showIdentifier)") }
-            let authHelper = AuthHelper()
-            let webViewPresenter = WebViewPresenter(authHelper: authHelper )
-            webViewViewController.presenter = webViewPresenter
-            webViewPresenter.view = webViewViewController
             webViewViewController.delegate = self
         } else {
             super.prepare(for: segue, sender: sender)

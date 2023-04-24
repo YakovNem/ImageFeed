@@ -63,7 +63,7 @@ final class ProfileService {
     }
     
     private func makeRequestProfile(token: String) -> URLRequest {
-        let unsplashProfileUserURLString = standard.defaultBaseURLString + "me"
+        let unsplashProfileUserURLString = Constants.defaultBaseURLString + "me"
         guard let url = URL(string: unsplashProfileUserURLString) else { fatalError("Failed to create URL") }
         var requset = URLRequest(url: url)
         requset.httpMethod = "GET"
