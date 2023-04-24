@@ -8,57 +8,31 @@
 import UIKit
 import Kingfisher
 
-class ImagesListViewController: UIViewController {
+protocol ImagesListViewControllerProtocol: AnyObject {
+    func updateTableView(oldCount: Int, newCount: Int)
+    func showAlert(title: String, message: String)
+}
+
+class ImagesListViewController: UIViewController & ImagesListViewControllerProtocol {
     
     @IBOutlet private var tableView: UITableView!
     
     private var photos: [Photos] = []
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
-    private var profileImageViewController = ProfileViewController()
+    private var profileImageViewController: ProfileViewController!
     private var imagesListService = ImagesListService()
-    private var imagesListServiceObserver: NSObjectProtocol?
-    private var isLoadingPhotos = false
+    var presenter: ImagesListPresenterProtocol!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let profilePresenter = ProfilePresenter(view: profileImageViewController)
+        profileImageViewController = ProfileViewController(presenter: profilePresenter)
+        
+        self.presenter = ImagesListPresenter(imagesListService: imagesListService, view: self)
+        
         self.navigationController?.setNavigationBarHidden(true, animated: false)
-        imagesListServiceObserver = NotificationCenter.default.addObserver(
-            forName: ImagesListService.didChangeNotification,
-            object: nil,
-            queue: .main) { [weak self] _ in
-                guard let self = self else { return }
-                self.updateTableViewAnimated()
-                self.isLoadingPhotos = false
-            }
         imagesListService.fetchPhotosNextPage()
-    }
-    
-    private lazy var dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .long
-        formatter.timeStyle = .none
-        return formatter
-    }()
-    
-    private func updateTableViewAnimated() {
-        let oldCount = photos.count
-        let newCount = imagesListService.photos.count
-        photos = imagesListService.photos
-        if oldCount != newCount {
-            tableView.performBatchUpdates {
-                let indexPaths = (oldCount..<newCount).map { i in
-                    IndexPath(row: i, section: 0)
-                }
-                tableView.insertRows(at: indexPaths, with: .automatic)
-            } completion: { _ in }
-        }
-    }
-    
-    private func loadNextPhotosPage() {
-        if !isLoadingPhotos {
-            isLoadingPhotos = true
-            imagesListService.fetchPhotosNextPage()
-        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -73,9 +47,21 @@ class ImagesListViewController: UIViewController {
         }
     }
     
-    private func showAlert() {
-        let alert = UIAlertController(title: "Что-то пошло не так",
-                                      message: "Не удалось войти в систему",
+    func updateTableView(oldCount: Int, newCount: Int) {
+        photos = imagesListService.photos
+        if oldCount != newCount {
+            tableView.performBatchUpdates {
+                let indexPaths = (oldCount..<newCount).map { i in
+                    IndexPath(row: i, section: 0)
+                }
+                tableView.insertRows(at: indexPaths, with: .automatic)
+            } completion: { _ in }
+        }
+    }
+    
+    func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title,
+                                      message: message,
                                       preferredStyle: .alert)
         let actionAlert = UIAlertAction(title: "Ок", style: .default, handler: nil)
         alert.addAction(actionAlert)
@@ -98,7 +84,7 @@ extension ImagesListViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
-        configCell(for: imageListCell, with: indexPath)
+        presenter.configCell(for: imageListCell, with: indexPath)
         imageListCell.delegate = self
         return imageListCell
     }
@@ -119,7 +105,7 @@ extension ImagesListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if indexPath.row == photos.count - 1 {
-            loadNextPhotosPage()
+            presenter.loadNextPhotosPage()
         }
     }
     
@@ -128,48 +114,16 @@ extension ImagesListViewController: UITableViewDelegate {
     }
 }
 
-extension ImagesListViewController {
-    func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
-        let imageURL = photos[indexPath.row].thumbImageURL
-        let url = URL(string: imageURL)
-        let placeholder = UIImage(named: "Stub")
-        cell.cellImage.kf.indicatorType = .activity
-        cell.cellImage.kf.setImage(with: url, placeholder: placeholder) {[weak self] _ in
-            guard let self = self else { return }
-            self.tableView.reloadRows(at: [indexPath], with: .automatic)
-            cell.cellImage.kf.indicatorType = .none
-        }
-        
-        if let createdAt = photos[indexPath.row].createdAt {
-            let dateString = dateFormatter.string(from: createdAt)
-            cell.dateLabel.text = dateString
-        } else {
-            cell.dateLabel.text = ""
-        }
-        
-        let isLiked = imagesListService.photos[indexPath.row].isLiked == false
-        let likeImage = isLiked ? UIImage(named: "No Active") : UIImage(named: "Active")
-        cell.likeButton.setImage(likeImage, for: .normal)
-        cell.selectionStyle = .none
-    }
-}
-
 extension ImagesListViewController: ImagesListCellDelegate {
     
     func imageListCellDidTapLike(_ cell: ImagesListCell) {
-        
         guard let indexPath = tableView.indexPath(for: cell) else { return }
-        let photo = photos[indexPath.row]
-        UIBlockingProgressHUD.show()
-        imagesListService.changeLike(photoId: photo.id, isLike: !photo.isLiked) { result in
+        presenter.changeLike(at: indexPath) { [weak self] result in
             switch result {
             case .success:
-                self.photos = self.imagesListService.photos
-                cell.setIsLiked(isLiked: self.photos[indexPath.row].isLiked)
-                UIBlockingProgressHUD.dismiss()
+                self?.tableView.reloadRows(at: [indexPath], with: .automatic)
             case .failure:
-                UIBlockingProgressHUD.dismiss()
-                self.showAlert()
+                self?.showAlert(title: "Что-то пошло не так", message: "Не удалось войти в систему")
             }
         }
     }

@@ -214,7 +214,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="vectorAuth" translatesAutoresizingMaskIntoConstraints="NO" id="TDl-HN-yHS">
-                                <rect key="frame" x="165" y="420.66666666666669" width="60" height="60"/>
+                                <rect key="frame" x="165" y="398.66666666666669" width="60" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="flj-x2-P45"/>
                                     <constraint firstAttribute="width" constant="60" id="pSb-tZ-ubK"/>
@@ -223,6 +223,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="weE-ff-noJ" userLabel="Authorization Button">
                                 <rect key="frame" x="16" y="672" width="358" height="48"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <accessibility key="accessibilityConfiguration" identifier="Authenticate"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="50U-qu-gkA"/>
                                 </constraints>
@@ -270,7 +271,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5cr-rP-yIM">
+                            <wkWebView contentMode="scaleToFill" restorationIdentifier="UnsplashWebView" translatesAutoresizingMaskIntoConstraints="NO" id="5cr-rP-yIM">
                                 <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <wkWebViewConfiguration key="configuration">
@@ -297,6 +298,9 @@
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="zj2-TY-GAl"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <accessibility key="accessibilityConfiguration">
+                            <bool key="isElement" value="YES"/>
+                        </accessibility>
                         <constraints>
                             <constraint firstItem="K6l-TG-eH0" firstAttribute="top" secondItem="zj2-TY-GAl" secondAttribute="top" id="7dU-7t-dd0"/>
                             <constraint firstItem="bmu-lE-zbA" firstAttribute="trailing" secondItem="SAA-us-phT" secondAttribute="trailing" id="8oY-o7-8KR"/>
@@ -318,23 +322,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kbj-WT-v0p" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-612" y="-233"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="rOZ-6T-1OQ">
-            <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ELP-F5-cqV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-                <navigationController id="hAv-qC-fr5" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="Bd2-y5-AzS"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Qp6-nb-w6B">
-                        <rect key="frame" x="0.0" y="47" width="390" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="lzU-ZS-r4F" kind="relationship" relationship="rootViewController" id="deG-4X-WqH"/>
-                    </connections>
-                </navigationController>
-            </objects>
-            <point key="canvasLocation" x="-3003" y="-233"/>
         </scene>
     </scenes>
     <resources>
