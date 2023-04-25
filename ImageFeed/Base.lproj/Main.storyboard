@@ -112,7 +112,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="23t-Qf-NFt">
             <objects>
-                <tabBarController storyboardIdentifier="TabBarController" id="PsI-Fq-2EZ" customClass="TabBarController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="TabBarViewController" id="PsI-Fq-2EZ" customClass="TabBarController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="a7F-Mj-rgQ">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -126,7 +126,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="s6h-u9-nTA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3003" y="802"/>
+            <point key="canvasLocation" x="-2068" y="766"/>
         </scene>
         <!--Single Image View Controller-->
         <scene sceneID="OUS-Lb-chs">
@@ -266,7 +266,7 @@
         <!--Web View View Controller-->
         <scene sceneID="bCY-OO-pcj">
             <objects>
-                <viewController storyboardIdentifier="ShowWebView" id="c2X-MJ-e1w" customClass="WebViewViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="c2X-MJ-e1w" customClass="WebViewViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="SAA-us-phT">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

@@ -61,7 +61,7 @@ final class ImagesListService {
     }
     private func fetchPhotos(token: String, page: Int, completion: @escaping (Result<[PhotoResults], Error>) -> Void) {
         assert(Thread.isMainThread)
-//        if lastCode == token { return }
+        if lastCode == token { return }
         task?.cancel()
         lastCode = token
         let request = makeRequestPhotos(page: page, perPage: perPage, token: token)
