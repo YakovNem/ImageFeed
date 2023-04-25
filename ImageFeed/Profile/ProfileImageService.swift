@@ -21,15 +21,10 @@ final class ProfileImageService {
     
     static let didChangeNotification = Notification.Name("ProfileImageProviderDidChange")
     
-    func fetchProfileImageURL(username: String, token: String, _ completion: @escaping (Result<String, Error>) -> Void) {
+    func fetchProfileImageURL(username: String,  _ completion: @escaping (Result<String, Error>) -> Void) {
         assert(Thread.isMainThread)
-        guard
-            lastUsername == username,
-            lastCode == token else { return }
-        task?.cancel()
-        lastUsername = username
-        lastCode = token
-        let request = makeRequestProfileImage(username: username, token: token)
+       
+        let request = makeRequestProfileImage(username: username, token: OAuth2TokenStorage().token!)
         let task = urlSession.dataTask(with: request) { data, response, error in
             DispatchQueue.main.async {
                 if let error = error {
@@ -46,7 +41,7 @@ final class ProfileImageService {
                 if let data = data {
                     do {
                         let result = try JSONDecoder().decode(UserResult.self, from: data)
-                        guard let profileImageURL = result.profileImage.small else { return }
+                        guard let profileImageURL = result.profileImage.large else { return }
                         self.avatarURL = profileImageURL
                         completion(.success(profileImageURL))
                         NotificationCenter.default
@@ -57,9 +52,6 @@ final class ProfileImageService {
                         completion(.failure(NetworkError.invalidData))
                     }
                 }
-                self.task = nil
-                self.lastUsername = nil
-                self.lastCode = nil
             }
         }
         self.task = task
@@ -85,10 +77,10 @@ struct UserResult: Codable {
 }
 
 struct ProfileImage: Codable {
-    var small: String?
+    var large: String?
     
     enum CodingKeys: String, CodingKey {
-        case small = "small"
+        case large = "large"
     }
 }
 enum NetworkError: Error {

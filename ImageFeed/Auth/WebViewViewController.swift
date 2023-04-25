@@ -21,7 +21,8 @@ public protocol WebViewViewControllerProtocol: AnyObject {
 }
 
 final class WebViewViewController: UIViewController & WebViewViewControllerProtocol {
-    public var presenter: WebViewPresenterProtocol?
+    
+    var presenter: WebViewPresenterProtocol?
 
     @IBOutlet private var webView: WKWebView!
     @IBOutlet private var progressView: UIProgressView!
@@ -39,15 +40,12 @@ final class WebViewViewController: UIViewController & WebViewViewControllerProto
        
         webView.navigationDelegate = self
         presenter?.viewDidLoad()
-        presenter?.didUpdateProgressValue(webView.estimatedProgress)
-    }
-    
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if keyPath == #keyPath(WKWebView.estimatedProgress) {
-            presenter?.didUpdateProgressValue(webView.estimatedProgress)
-        } else {
-            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-        }
+        
+        estimatedProgressObservation = webView.observe(\.estimatedProgress, options: [], changeHandler: { [weak self] _, _ in
+            guard let self = self else { return }
+            self.presenter?.didUpdateProgressValue(self.webView.estimatedProgress)
+        })
+
     }
     
     func load(request: URLRequest) {
