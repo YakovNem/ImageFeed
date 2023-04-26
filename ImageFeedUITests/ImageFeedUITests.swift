@@ -35,7 +35,7 @@ class Image_FeedUITests: XCTestCase {
         XCTAssertTrue(passwordTextField.waitForExistence(timeout: 10))
         
         passwordTextField.tap()
-        passwordTextField.typeText("Lemon.3712")
+        passwordTextField.typeText("")
         webView.swipeUp()
         
         
