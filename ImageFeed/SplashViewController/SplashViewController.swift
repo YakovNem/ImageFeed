@@ -115,3 +115,18 @@ extension SplashViewController: AuthViewControllerDelegate {
         })
     }
 }
+
+extension SplashViewController {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == showAuthIdentifier {
+            guard
+                let navigationController = segue.destination as? UINavigationController,
+                let viewController = navigationController.viewControllers[0] as? AuthViewController
+            else { fatalError("Failed to prepare for \(showAuthIdentifier)") }
+            
+            viewController.delegate = self
+        } else {
+            super.prepare(for: segue, sender: sender)
+        }
+    }
+}

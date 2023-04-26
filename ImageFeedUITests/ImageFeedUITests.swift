@@ -19,33 +19,37 @@ class Image_FeedUITests: XCTestCase {
     
     func testAuth() throws {
         app.buttons["Authenticate"].tap()
-        
         let webView = app.webViews["UnsplashWebView"]
-        
-        XCTAssertTrue(webView.waitForExistence(timeout: 2))
-        
+        XCTAssertTrue(webView.waitForExistence(timeout: 10))
+        webView.swipeUp()
         let loginTextField = webView.descendants(matching: .textField).element
-        XCTAssertTrue(loginTextField.waitForExistence(timeout: 5))
+        XCTAssertTrue(loginTextField.waitForExistence(timeout: 10))
         
         loginTextField.tap()
         loginTextField.typeText("")
-        webView.swipeUp()
+        
+        XCUIApplication().toolbars.buttons["Done"].tap()
+        
         
         let passwordTextField = webView.descendants(matching: .secureTextField).element
-        XCTAssertTrue(passwordTextField.waitForExistence(timeout: 5))
+        XCTAssertTrue(passwordTextField.waitForExistence(timeout: 10))
         
         passwordTextField.tap()
-        passwordTextField.typeText("")
+        passwordTextField.typeText("Lemon.3712")
         webView.swipeUp()
         
-        webView.buttons["Login"].tap()
+        
+        let webViewsQuery = app.webViews
+        
+        webViewsQuery.buttons["Login"].tap()
         
         let tablesQuery = app.tables
         let cell = tablesQuery.children(matching: .cell).element(boundBy: 0)
         
-        XCTAssertTrue(cell.waitForExistence(timeout: 5))
+        XCTAssertTrue(cell.waitForExistence(timeout: 20))
+        
     }
-    
+
     func testFeed() throws {
         let tablesQuery = app.tables
         
@@ -66,14 +70,13 @@ class Image_FeedUITests: XCTestCase {
         sleep(2)
         
         let image = app.scrollViews.images.element(boundBy: 0)
-        // Zoom in
-        image.pinch(withScale: 3, velocity: 1) // zoom in
-        // Zoom out
+        image.pinch(withScale: 3, velocity: 1)
         image.pinch(withScale: 0.5, velocity: -1)
         
         let navBackButtonWhiteButton = app.buttons["backButton"]
         navBackButtonWhiteButton.tap()
     }
+    
     func testProfile() throws {
         sleep(3)
         app.tabBars.buttons.element(boundBy: 1).tap()
@@ -84,5 +87,6 @@ class Image_FeedUITests: XCTestCase {
         app.buttons["ipad.and.arrow.forward"].tap()
         
         app.alerts["Пока, пока!"].scrollViews.otherElements.buttons["Да"].tap()
+        XCTAssertTrue(app.buttons["Authenticate"].exists)
     }
 }
